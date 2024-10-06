@@ -17,3 +17,4 @@
 //> using dep io.github.quafadas::peer-scalajs::0.0.3
 
 //> using dep com.outr::scribe::3.15.0
+//> using dep io.github.quafadas::peer-scalajs::0.0.3

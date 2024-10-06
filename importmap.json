@@ -1,6 +1,6 @@
 {
   "imports": {
     "snabdom": "https://cdn.jsdelivr.net/npm/snabbdom@3.6",
-    "@peerJs/dist": "https://esm.sh/peerjs@1.5.4?bundle-deps"    
+    "@peerJs/dist": "https://esm.sh/peerjs@1.5.4?bundle-deps"
   }
 }

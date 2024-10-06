@@ -110,13 +110,13 @@ object FlicFlacGameModel:
       previousModel: FlicFlacGameModel,
       possiblePiece: Option[Piece],
       possibleHighLighter: Option[HighLighter]
-  ): FlicFlacGameModel =
+  ): Outcome[FlicFlacGameModel] =
     val m1 = modifyPiece(previousModel, possiblePiece)
     val m2 = modifyHighLighter(m1, possibleHighLighter)
     val m3 = modifyPossibleMoves(m2)
     val asJson = m3.asJson.noSpaces
     org.scalajs.dom.window.localStorage.setItem("FlicFlacStats", asJson)
-    m3
+    Outcome(m3).addGlobalEvents(WebRtcEvent.SendGameData(m3))
   end modify
 
   def modifyPiece(previousModel: FlicFlacGameModel, possiblePiece: Option[Piece]): FlicFlacGameModel =
@@ -136,8 +136,8 @@ object FlicFlacGameModel:
         previousModel
   end modifyPiece
 
-  def modifyPieces(previousModel: FlicFlacGameModel, newPieces: Pieces): FlicFlacGameModel =
-    previousModel.copy(pieces = newPieces)
+  def modifyPieces(previousModel: FlicFlacGameModel, newPieces: Pieces): Outcome[FlicFlacGameModel] =
+    Outcome(previousModel.copy(pieces = newPieces))
   end modifyPieces
 
   def modifyHighLighter(previousModel: FlicFlacGameModel, possibleHighLighter: Option[HighLighter]): FlicFlacGameModel =
@@ -193,7 +193,7 @@ object FlicFlacGameModel:
       case Right(model: FlicFlacGameModel) =>
         // FIXME we should check for version number here and goto create if mismatch
         scribe.debug("@@@ Restored model")
-        model
+        FlicFlacGameModel.creation(playerParams)
       case Left(_) =>
         scribe.debug("@@@ Created model")
         FlicFlacGameModel.creation(playerParams)
